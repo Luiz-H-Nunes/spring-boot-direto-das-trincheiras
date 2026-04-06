@@ -1,5 +1,8 @@
 package spring.student.controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import spring.student.controllers.domain.Producer;
@@ -35,11 +38,11 @@ public class ProducerController {
                 findFirst().get();
     }
 
-    @PostMapping()
-    public Producer addProducer(@RequestBody Producer producer) {
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE,headers = "x-api-key=addProducer")
+    public ResponseEntity<Producer> addProducer(@RequestBody Producer producer) {
         producer.setId(getProducers().stream().count() + 1);
         getProducers().add(producer);
-        return producer;
+        return ResponseEntity.status(HttpStatus.CREATED).body(producer);
 
     }
 }
