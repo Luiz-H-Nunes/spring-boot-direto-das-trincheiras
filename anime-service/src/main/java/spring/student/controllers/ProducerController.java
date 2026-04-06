@@ -1,19 +1,25 @@
 package spring.student.controllers;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import spring.student.controllers.domain.Producer;
+import spring.student.domain.Producer;
+import spring.student.request.ProducerPostRequest;
+import spring.student.response.ProducerGetRespose;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static spring.student.controllers.domain.Producer.getProducers;
+import static spring.student.domain.Producer.getProducers;
 
 
+@Slf4j
 @RestController
 @RequestMapping("v1/producers")
 public class ProducerController {
@@ -39,10 +45,16 @@ public class ProducerController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE,headers = "x-api-key=addProducer")
-    public ResponseEntity<Producer> addProducer(@RequestBody Producer producer) {
-        producer.setId(getProducers().stream().count() + 1);
-        getProducers().add(producer);
-        return ResponseEntity.status(HttpStatus.CREATED).body(producer);
+    public ResponseEntity<ProducerGetRespose> addProducer(@RequestBody ProducerPostRequest producerPostRequest,@RequestHeader HttpHeaders httpHeaders) {
+        log.info("{}",httpHeaders);
+        var producer = Producer.builder().id(getProducers().stream().mapToLong(Producer::getId).max().orElse(0)+1).
+                name(producerPostRequest.getName()).created(LocalDateTime.now()).build();
+
+        Producer.getProducers().add(producer);
+
+        var producerGetResponse = ProducerGetRespose.builder().Id(producer.getId()).name(producerPostRequest.getName()).build();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(producerGetResponse);
 
     }
 }

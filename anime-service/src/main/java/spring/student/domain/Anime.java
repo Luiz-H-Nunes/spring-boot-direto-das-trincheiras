@@ -1,4 +1,4 @@
-package spring.student.controllers.domain;
+package spring.student.domain;
 
 import lombok.Getter;
 import lombok.Setter;

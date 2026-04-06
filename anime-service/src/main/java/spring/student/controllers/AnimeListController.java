@@ -2,16 +2,14 @@ package spring.student.controllers;
 
 
 import org.springframework.web.bind.annotation.*;
-import spring.student.controllers.domain.Anime;
+import spring.student.domain.Anime;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 
 @RestController()
