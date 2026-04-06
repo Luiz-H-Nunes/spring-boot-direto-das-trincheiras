@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ProducerGetRespose {
     private String name;
-    private Long Id;
-    private LocalDateTime date;
+    private Long id;
+    private LocalDateTime created ;
 
 }

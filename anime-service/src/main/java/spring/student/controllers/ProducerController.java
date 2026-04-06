@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import spring.student.domain.Producer;
+import spring.student.mapper.ProducerMapper;
 import spring.student.request.ProducerPostRequest;
 import spring.student.response.ProducerGetRespose;
 
@@ -24,7 +25,7 @@ import static spring.student.domain.Producer.getProducers;
 @RequestMapping("v1/producers")
 public class ProducerController {
 
-
+private final ProducerMapper MAPPER =  ProducerMapper.INSTANCE;
     @GetMapping
     public List<Producer> ListAllProducers(){
         return getProducers();
@@ -47,12 +48,12 @@ public class ProducerController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE,headers = "x-api-key=addProducer")
     public ResponseEntity<ProducerGetRespose> addProducer(@RequestBody ProducerPostRequest producerPostRequest,@RequestHeader HttpHeaders httpHeaders) {
         log.info("{}",httpHeaders);
-        var producer = Producer.builder().id(getProducers().stream().mapToLong(Producer::getId).max().orElse(0)+1).
-                name(producerPostRequest.getName()).created(LocalDateTime.now()).build();
+
+        var producer = MAPPER.toProducer(producerPostRequest);
+
+        var producerGetResponse = MAPPER.toProducerGetRespose(producer);
 
         Producer.getProducers().add(producer);
-
-        var producerGetResponse = ProducerGetRespose.builder().Id(producer.getId()).name(producerPostRequest.getName()).build();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(producerGetResponse);
 
