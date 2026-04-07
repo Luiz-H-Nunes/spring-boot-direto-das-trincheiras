@@ -2,12 +2,15 @@ package spring.student.controllers;
 
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import spring.student.domain.Anime;
+import spring.student.domain.Producer;
 import spring.student.mapper.AnimeMapper;
 import spring.student.request.AnimePostRequest;
 import spring.student.response.AnimeGetResponse;
@@ -21,7 +24,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import static spring.student.domain.Anime.listAnime;
+import static spring.student.domain.Producer.getProducers;
 
+@Slf4j
 @Getter
 @RestController()
 @RequestMapping("v1/animes")
@@ -65,6 +70,20 @@ public class AnimeListController {
         return ResponseEntity.status(HttpStatus.CREATED).body(animePostResponse);
 
 
+    }
+    @DeleteMapping("filterPath/{id}")
+    public ResponseEntity<Void> deletebyId(@PathVariable Long id ) {
+
+        log.debug("Request to delete anime : {}", id);
+
+
+        Anime producerToDelete = listAnime().stream().
+                filter(anime -> anime.getId().equals(id)).
+                findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Producer not found"));
+
+        listAnime().remove(producerToDelete);
+
+        return ResponseEntity.ok().build();
     }
 
 
