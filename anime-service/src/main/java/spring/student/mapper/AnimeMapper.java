@@ -8,6 +8,7 @@ import org.mapstruct.factory.Mappers;
 import spring.student.controllers.AnimeListController;
 import spring.student.domain.Anime;
 import spring.student.request.AnimePostRequest;
+import spring.student.request.AnimePutRequest;
 import spring.student.response.AnimeGetResponse;
 import spring.student.response.AnimePostResponse;@Mapper
 
@@ -18,6 +19,8 @@ public interface AnimeMapper {
 
     @Mapping(target = "id", expression = "java(AnimeMapper.generateIdAnime())")
     Anime toAnime(AnimePostRequest animePostRequest);
+
+    Anime toAnime(AnimePutRequest animePutRequest);
 
     @Mapping(target = "created",
             expression = "java(java.time.LocalDateTime.now())")

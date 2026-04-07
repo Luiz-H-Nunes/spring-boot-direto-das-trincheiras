@@ -13,6 +13,7 @@ import spring.student.domain.Anime;
 import spring.student.domain.Producer;
 import spring.student.mapper.AnimeMapper;
 import spring.student.request.AnimePostRequest;
+import spring.student.request.AnimePutRequest;
 import spring.student.response.AnimeGetResponse;
 import spring.student.response.AnimePostResponse;
 
@@ -58,7 +59,8 @@ public class AnimeListController {
 
     @GetMapping("filterPath/{idAnime}")
     public AnimeGetResponse filterAnime(@PathVariable Long idAnime) {
-        var animeGetResponse = MAPPER.toAnimeGetResponse(listAnime().stream().filter(anime -> anime.getId().equals(idAnime)).findFirst().get());
+        var animeGetResponse = MAPPER.toAnimeGetResponse(listAnime().stream().filter
+                (anime -> anime.getId().equals(idAnime)).findFirst().orElseThrow(() -> new  ResponseStatusException(HttpStatus.NOT_FOUND)));
         return animeGetResponse;
     }
 
@@ -82,6 +84,25 @@ public class AnimeListController {
                 findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Producer not found"));
 
         listAnime().remove(producerToDelete);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("filterPath/{id}")
+    public ResponseEntity<Void> updateById(@PathVariable  Long id , @RequestBody AnimePutRequest animePutRequest) {
+
+        log.debug("Request to delete anime : {}", animePutRequest);
+
+
+        Anime anime = listAnime().stream()
+                .filter(a -> a.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Anime not found"));
+
+        anime.setName(animePutRequest.getName());
+
+
 
         return ResponseEntity.ok().build();
     }
