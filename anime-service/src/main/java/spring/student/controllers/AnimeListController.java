@@ -1,8 +1,17 @@
 package spring.student.controllers;
 
 
+import lombok.Getter;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.student.domain.Anime;
+import spring.student.mapper.AnimeMapper;
+import spring.student.request.AnimePostRequest;
+import spring.student.response.AnimeGetResponse;
+import spring.student.response.AnimePostResponse;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -11,10 +20,14 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
+import static spring.student.domain.Anime.listAnime;
 
+@Getter
 @RestController()
 @RequestMapping("v1/animes")
 public class AnimeListController {
+
+    private final AnimeMapper MAPPER = AnimeMapper.INSTANCE;
 
     public static HashSet<Anime> animes;
 
@@ -24,41 +37,33 @@ public class AnimeListController {
 
 
     @GetMapping
-    public static HashSet<Anime> listAnime() {
-       Set<String> anime = new HashSet<>(Arrays.asList(
-                "Dragon Ball Z",
-                "Naruto",
-                "One Piece",
-                "Attack on Titan",
-                "Death Note",
-                "Fullmetal Alchemist: Brotherhood",
-                "Bleach",
-                "Demon Slayer (Kimetsu no Yaiba)",
-                "My Hero Academia (Boku no Hero Academia)",
-                "Neon Genesis Evangelion"
-        ));
-        AtomicLong counter = new AtomicLong();
-
-       HashSet<Anime> animes = anime.stream().map(a -> new Anime(counter.incrementAndGet(), a)).collect(Collectors.toCollection(HashSet::new));
+    public static HashSet<Anime> listAllAnime() {
         return animes;
 
     }
 
     @GetMapping("filterList")
-    public HashSet<Anime> findByName(@RequestParam(required = false) List<String> animeName) {
-        return listAnime().stream().filter(anime -> animeName.stream().anyMatch(hero -> anime.getName().equalsIgnoreCase(hero))).collect(Collectors.toCollection(HashSet::new));
+    public HashSet<AnimeGetResponse> findByName(@RequestParam(required = false) List<String> animeName) {
+       var  animeGetResponse = listAnime().stream().filter(anime -> animeName.
+                stream().anyMatch(hero -> anime.getName().equalsIgnoreCase(hero))).map(anime -> MAPPER.toAnimeGetResponse(anime))
+               .collect(Collectors.toCollection(HashSet::new));
+        return animeGetResponse;
+
     }
 
     @GetMapping("filterPath/{idAnime}")
-    public Anime filterAnime(@PathVariable Long idAnime) {
-        return listAnime().stream().filter(anime -> anime.getId().equals(idAnime)).findFirst().get();
+    public AnimeGetResponse filterAnime(@PathVariable Long idAnime) {
+        var animeGetResponse = MAPPER.toAnimeGetResponse(listAnime().stream().filter(anime -> anime.getId().equals(idAnime)).findFirst().get());
+        return animeGetResponse;
     }
 
-    @PostMapping()
-    public Anime addAnime(@RequestBody Anime anime) {
-        anime.setId(animes.stream().count() + 1);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE,headers = "x-api-key=addAnime")
+    public ResponseEntity<AnimePostResponse> addAnime(@RequestBody AnimePostRequest animePostRequest, @RequestHeader HttpHeaders httpHeaders) {
+        var anime = MAPPER.toAnime(animePostRequest);
+        var animePostResponse = MAPPER.toAnimePostResponse(anime);
         animes.add(anime);
-        return anime;
+        return ResponseEntity.status(HttpStatus.CREATED).body(animePostResponse);
+
 
     }
 

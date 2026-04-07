@@ -1,15 +1,13 @@
 package spring.student.response;
 
-import lombok.*;
+import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
-
-
 @Data
-@Builder
-public class ProducerGetRespose {
+public class AnimeGetResponse {
     private String name;
     private Long id;
-    private LocalDateTime created ;
+    private LocalDateTime created;
 
 }
