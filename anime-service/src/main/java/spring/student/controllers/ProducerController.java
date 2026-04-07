@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.server.ResponseStatusException;
 import spring.student.domain.Producer;
 import spring.student.mapper.ProducerMapper;
 import spring.student.request.ProducerPostRequest;
@@ -35,14 +36,18 @@ private final ProducerMapper MAPPER =  ProducerMapper.INSTANCE;
 
     @GetMapping("filterList")
     public ResponseEntity<ArrayList<ProducerGetRespose>> findByName(@RequestParam(required = false) List<String> producerName) {
-        return ResponseEntity.ok(getProducers().stream().filter(producer -> producerName.stream().anyMatch(hero -> producer.getName().equalsIgnoreCase(hero))).map(MAPPER::toProducerGetRespose).collect(Collectors.toCollection(ArrayList::new)));
+        return ResponseEntity.ok(getProducers().stream().
+                filter(producer -> producerName.stream().
+                        anyMatch(hero -> producer.getName().
+                                equalsIgnoreCase(hero))).map(MAPPER::toProducerGetRespose).
+                collect(Collectors.toCollection(ArrayList::new)));
     }
 
     @GetMapping("filterPath/{idproducer}")
     public ResponseEntity<ProducerGetRespose> filterProducer(@PathVariable Long idproducer) {
         return ResponseEntity.ok(getProducers().stream().
                 filter(producer -> producer.getId().equals(idproducer)).
-                findFirst().map(MAPPER::toProducerGetRespose).get());
+                findFirst().map(MAPPER::toProducerGetRespose).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Producer not found")));
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE,headers = "x-api-key=addProducer")
@@ -57,5 +62,17 @@ private final ProducerMapper MAPPER =  ProducerMapper.INSTANCE;
 
         return ResponseEntity.status(HttpStatus.CREATED).body(producerGetResponse);
 
+    }
+
+    @DeleteMapping("filterPath/{id}")
+    public ResponseEntity<Void> deletebyId(@PathVariable Long id ) {
+        log.debug("Request to delete producer : {}", id);
+        Producer producerToDelete = getProducers().stream().
+                filter(p -> p.getId().equals(id)).
+                findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Producer not found"));
+
+        getProducers().remove(producerToDelete);
+
+        return ResponseEntity.ok().build();
     }
 }
