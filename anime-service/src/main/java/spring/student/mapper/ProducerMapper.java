@@ -8,7 +8,8 @@ import spring.student.request.ProducerPostRequest;
 import spring.student.request.ProducerPutRequest;
 import spring.student.response.ProducerGetRespose;
 
-import static spring.student.domain.Producer.getProducers;
+import java.util.List;
+
 
 @Mapper()
 public interface ProducerMapper {
@@ -17,16 +18,14 @@ public interface ProducerMapper {
     @Mapping(target = "created" ,expression = "java(java.time.LocalDateTime.now())")
     @Mapping(
             target = "id",
-            expression = "java(ProducerMapper.generateIdProducer())"
+            expression = "java(java. ThreadLocalRandom.current().nextInt(0,100000))"
     )
 
     Producer toProducer(ProducerPostRequest producerPostRequest);
 
+    List<ProducerGetRespose> toListProducerGetRespose(List<Producer> producers);
     Producer toProducer(ProducerPutRequest producerPutRequest);
     ProducerGetRespose toProducerGetRespose(Producer producer);
 
-    public static Long generateIdProducer(){
-        return getProducers().stream()
-        .mapToLong(Producer::getId).max().orElse(0L) + 1;
-    }
+
 }
