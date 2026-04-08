@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import spring.student.domain.Producer;
 import spring.student.request.ProducerPostRequest;
+import spring.student.request.ProducerPutRequest;
 import spring.student.response.ProducerGetRespose;
 
 import static spring.student.domain.Producer.getProducers;
@@ -21,6 +22,7 @@ public interface ProducerMapper {
 
     Producer toProducer(ProducerPostRequest producerPostRequest);
 
+    Producer toProducer(ProducerPutRequest producerPutRequest);
     ProducerGetRespose toProducerGetRespose(Producer producer);
 
     public static Long generateIdProducer(){

@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import spring.student.domain.Producer;
 import spring.student.mapper.ProducerMapper;
 import spring.student.request.ProducerPostRequest;
+import spring.student.request.ProducerPutRequest;
 import spring.student.response.ProducerGetRespose;
 
 import java.time.LocalDateTime;
@@ -75,4 +76,21 @@ private final ProducerMapper MAPPER =  ProducerMapper.INSTANCE;
 
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("filterPath/{id}")
+    public ResponseEntity<Boolean> putById(@PathVariable Long id,@RequestBody ProducerPutRequest producerPutRequest) {
+        log.debug("Request to update producer : {}", id);
+
+        boolean exists = getProducers().stream().anyMatch(producer -> producer.getId().equals(id) && !(producer.getName().equals(producerPutRequest.getName()))) ;
+
+       if  (exists && !(producerPutRequest.getName().isBlank())){
+
+           getProducers().stream().filter(producer -> producer.getId().equals(id)).forEach(producer -> producer.setName(producerPutRequest.getName()));
+           return ResponseEntity.status(HttpStatus.ACCEPTED).body(true);
+
+       }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+
+    }
+
 }
