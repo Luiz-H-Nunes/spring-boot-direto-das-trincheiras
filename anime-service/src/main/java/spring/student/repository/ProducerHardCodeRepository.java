@@ -40,11 +40,11 @@ public class ProducerHardCodeRepository {
         return producer;
     }
 
-//    public  Producer update(Producer producer) {
-//        delete(producer);
-//        save(producer);
-//        return producer;
-//    }
+    public  Producer update(Producer producer) {
+        delete(producer);
+        save(producer);
+        return producer;
+    }
 
 
 }
