@@ -7,17 +7,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.server.ResponseStatusException;
 import spring.student.mapper.ProducerMapper;
-import spring.student.repository.ProducerHardCodeRepository;
 import spring.student.request.ProducerPostRequest;
 import spring.student.request.ProducerPutRequest;
 import spring.student.response.ProducerGetRespose;
 import spring.student.service.ProducerService;
 
 import java.util.List;
-
-import static spring.student.repository.ProducerHardCodeRepository.findAll;
 
 
 @Slf4j
@@ -77,7 +73,7 @@ public class ProducerController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("id")
+    @PutMapping()
     public ResponseEntity<Void> putById(@RequestBody ProducerPutRequest producerPutRequest) {
         log.debug("Request to update producer : {}", producerPutRequest);
 

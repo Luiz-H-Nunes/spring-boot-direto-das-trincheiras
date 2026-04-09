@@ -1,38 +1,29 @@
 package spring.student.mapper;
 
-
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import spring.student.controllers.AnimeListController;
 import spring.student.domain.Anime;
 import spring.student.request.AnimePostRequest;
 import spring.student.request.AnimePutRequest;
 import spring.student.response.AnimeGetResponse;
-import spring.student.response.AnimePostResponse;@Mapper
 
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
+@Mapper
 public interface AnimeMapper {
-
     AnimeMapper INSTANCE = Mappers.getMapper(AnimeMapper.class);
 
-    @Mapping(target = "id", expression = "java(AnimeMapper.generateIdAnime())")
+    @Mapping(target = "created" ,expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(
+            target = "id",
+            expression = "java(java.util.concurrent.ThreadLocalRandom.current().nextLong(0,100000))"
+    )
     Anime toAnime(AnimePostRequest animePostRequest);
-
-    Anime toAnime(AnimePutRequest animePutRequest);
-
-    @Mapping(target = "created",
-            expression = "java(java.time.LocalDateTime.now())")
-    AnimePostResponse toAnimePostResponse(Anime anime);
-
+    List<AnimeGetResponse> toListAnimeGetResponse(List<Anime> animes);
+    Anime toAnime(AnimePutRequest AnimePutRequest);
     AnimeGetResponse toAnimeGetResponse(Anime anime);
 
-    static Long generateIdAnime() {
-        return Anime.listAnime().stream()
-                .mapToLong(Anime::getId)
-                .max()
-                .orElse(0L) + 1;
-    }
 }
 

@@ -1,12 +1,13 @@
 package spring.student.repository;
 
+import org.springframework.stereotype.Repository;
 import spring.student.domain.Producer;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Repository
 public class ProducerHardCodeRepository {
     private static final List<Producer> PRODUCERS = new ArrayList<>();
 
