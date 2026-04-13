@@ -1,5 +1,6 @@
 package spring.student.controllers;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,16 +19,12 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("v1/producers")
 public class ProducerController {
 
     private final ProducerMapper MAPPER =  ProducerMapper.INSTANCE;
     private final ProducerService service;
-
-    public ProducerController(ProducerService producerService) {
-        this.service = producerService;
-    }
-
 
 
     @GetMapping()

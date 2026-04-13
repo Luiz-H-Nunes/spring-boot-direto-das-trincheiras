@@ -1,6 +1,7 @@
 package spring.student.controllers;
 
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,15 +21,14 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("v1/animes")
 public class AnimeController {
 
     private final AnimeMapper MAPPER = AnimeMapper.INSTANCE;
     private final AnimeService service;
 
-    public AnimeController(AnimeService service) {
-        this.service = service;
-    }
+
 
 
     @GetMapping()

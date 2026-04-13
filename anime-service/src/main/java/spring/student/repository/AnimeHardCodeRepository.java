@@ -1,5 +1,6 @@
 package spring.student.repository;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import spring.student.domain.Anime;
 
@@ -8,8 +9,9 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 @Repository
+@RequiredArgsConstructor
 public class AnimeHardCodeRepository {
-    private static List<Anime> ANIMES = new ArrayList<>();
+    private final static List<Anime> ANIMES = new ArrayList<>();
 
     static {
         List<String> anime = new ArrayList<>(Arrays.asList(
@@ -49,12 +51,12 @@ public class AnimeHardCodeRepository {
         return anime;
     }
 
-    public  Anime delete(Anime anime) {
+    public Anime delete(Anime anime) {
         ANIMES.remove(anime);
         return anime;
     }
 
-    public  Anime update(Anime anime) {
+    public Anime update(Anime anime) {
         delete(anime);
         save(anime);
         return anime;

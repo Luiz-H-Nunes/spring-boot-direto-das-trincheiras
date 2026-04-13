@@ -1,5 +1,6 @@
 package spring.student.repository;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import spring.student.domain.Producer;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Repository
+@RequiredArgsConstructor
 public class ProducerHardCodeRepository {
     private static final List<Producer> PRODUCERS = new ArrayList<>();
 

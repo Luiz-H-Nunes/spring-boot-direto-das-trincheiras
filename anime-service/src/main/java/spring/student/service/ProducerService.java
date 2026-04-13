@@ -1,5 +1,6 @@
 package spring.student.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -8,13 +9,10 @@ import spring.student.repository.ProducerHardCodeRepository;
 
 import java.util.List;
 @Service
+@RequiredArgsConstructor
 public class ProducerService {
     private ProducerHardCodeRepository repository;
 
-    public ProducerService(ProducerHardCodeRepository repository) {
-        this.repository = repository;
-
-    }
 
     public List<Producer> findAll(String name) {
         return name == null ? repository.findAll() : repository.findByName(name) ;

@@ -1,5 +1,6 @@
 package spring.student.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -9,14 +10,9 @@ import spring.student.repository.AnimeHardCodeRepository;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AnimeService {
-    private AnimeHardCodeRepository repository;
-
-    
-    public AnimeService(AnimeHardCodeRepository repository) {
-        this.repository = repository;
-
-    }
+    private final AnimeHardCodeRepository repository;
 
     public List<Anime> findAll(String name) {
         return name == null ? repository.findAll() : repository.findByName(name) ;
