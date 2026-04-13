@@ -2,6 +2,7 @@ package spring.student.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
 import org.mapstruct.factory.Mappers;
 import spring.student.domain.Producer;
 import spring.student.request.ProducerPostRequest;
@@ -11,9 +12,9 @@ import spring.student.response.ProducerGetRespose;
 import java.util.List;
 
 
-@Mapper()
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ProducerMapper {
-    ProducerMapper INSTANCE = Mappers.getMapper(ProducerMapper.class);
+
 
     @Mapping(target = "created" ,expression = "java(java.time.LocalDateTime.now())")
     @Mapping(

@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping("v1/producers")
 public class ProducerController {
 
-    private final ProducerMapper MAPPER =  ProducerMapper.INSTANCE;
+    private final ProducerMapper MAPPER;
     private final ProducerService service;
 
 
