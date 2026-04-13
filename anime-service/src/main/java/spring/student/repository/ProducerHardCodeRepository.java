@@ -1,6 +1,10 @@
 package spring.student.repository;
 
+import external.dependencies.Connection;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import spring.student.domain.Producer;
 
@@ -10,9 +14,13 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
+@Log4j2
 public class ProducerHardCodeRepository {
+
     private static final List<Producer> PRODUCERS = new ArrayList<>();
 
+
+    private final Connection connection;
     static {
         var producer1 = Producer.builder().id(1L).name("Toei Animation").created(LocalDateTime.now()).build();
         var producer2 = Producer.builder().id(2L).name("Nippon Animation").created(LocalDateTime.now()).build();
@@ -20,7 +28,7 @@ public class ProducerHardCodeRepository {
         PRODUCERS.addAll(List.of(producer1,producer2,producer3));
     }
 
-    public static List<Producer> findAll() {
+    public  List<Producer> findAll() {
         return PRODUCERS;
     }
 
@@ -30,7 +38,8 @@ public class ProducerHardCodeRepository {
     }
 
     public  List<Producer> findByName(String name) {
-        return PRODUCERS.stream().filter(producer -> producer.getName().equals(name)).toList();
+        log.debug(connection);
+        return PRODUCERS.stream().filter(producer -> producer.getName().equalsIgnoreCase(name.trim())).toList();
     }
 
     public  Producer save(Producer producer) {

@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ProducerService {
-    private ProducerHardCodeRepository repository;
+    private final ProducerHardCodeRepository repository;
 
 
     public List<Producer> findAll(String name) {

@@ -12,3 +12,7 @@ error:
 threads:
   virtual:
     enable: true
+
+logging:
+  level:
+    spring: DEBUG

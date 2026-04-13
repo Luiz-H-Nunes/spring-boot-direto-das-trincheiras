@@ -33,7 +33,7 @@ public class AnimeHardCodeRepository {
 
     }
 
-    public static List<Anime> findAll() {
+    public  List<Anime> findAll() {
         return ANIMES;
     }
 
@@ -43,7 +43,7 @@ public class AnimeHardCodeRepository {
     }
 
     public  List<Anime> findByName(String name) {
-        return ANIMES.stream().filter(anime -> anime.getName().equals(name)).toList();
+        return ANIMES.stream().filter(anime -> anime.getName().equalsIgnoreCase(name.trim())).toList();
     }
 
     public  Anime save(Anime anime) {
