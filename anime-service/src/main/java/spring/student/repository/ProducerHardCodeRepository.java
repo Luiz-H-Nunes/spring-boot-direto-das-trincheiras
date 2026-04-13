@@ -17,38 +17,33 @@ import java.util.Optional;
 @Log4j2
 public class ProducerHardCodeRepository {
 
-    private static final List<Producer> PRODUCERS = new ArrayList<>();
+    private final ProducerData producerData;
 
 
     private final Connection connection;
-    static {
-        var producer1 = Producer.builder().id(1L).name("Toei Animation").created(LocalDateTime.now()).build();
-        var producer2 = Producer.builder().id(2L).name("Nippon Animation").created(LocalDateTime.now()).build();
-        var producer3 = Producer.builder().id(2L).name("TMS Entertainment").created(LocalDateTime.now()).build();
-        PRODUCERS.addAll(List.of(producer1,producer2,producer3));
-    }
+
 
     public  List<Producer> findAll() {
-        return PRODUCERS;
+        return producerData.getProducers();
     }
 
     public  Optional<Producer> findById(Long id) {
-        return  PRODUCERS.stream().filter(producer -> producer.getId().equals(id)).findFirst();
+        return  producerData.getProducers().stream().filter(producer -> producer.getId().equals(id)).findFirst();
 
     }
 
     public  List<Producer> findByName(String name) {
         log.debug(connection);
-        return PRODUCERS.stream().filter(producer -> producer.getName().equalsIgnoreCase(name.trim())).toList();
+        return producerData.getProducers().stream().filter(producer -> producer.getName().equalsIgnoreCase(name.trim())).toList();
     }
 
     public  Producer save(Producer producer) {
-         PRODUCERS.add(producer);
+         producerData.getProducers().add(producer);
         return producer;
     }
 
     public  Producer delete(Producer producer) {
-        PRODUCERS.remove(producer);
+        producerData.getProducers().remove(producer);
         return producer;
     }
 
