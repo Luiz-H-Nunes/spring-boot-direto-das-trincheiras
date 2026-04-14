@@ -69,6 +69,51 @@ class ProducerHardCodeRepositoryTest {
         Assertions.assertThat(producer).contains(expectedProducer);
 
     }
+    @Test
+    @Order(5)
+    @DisplayName("save creates a producer ")
+    void  save_CreatesProducer_WhenSuccessfull() {
+        BDDMockito.when(producerData.getProducers()).thenReturn(producers);
+        var producerToSave = Producer.builder().id(99L).name("Toei Animation").created(LocalDateTime.now()).build();
+        Producer save = repository.save(producerToSave);
+        Assertions.assertThat(producers).isNotNull().contains(producerToSave);
+
+
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("delete remove a producer ")
+    void  delete_RemoveProducer_WhenSuccessfull() {
+        BDDMockito.when(producerData.getProducers()).thenReturn(producers);
+        var producerToDelete = producers.getFirst();
+        Producer delete = repository.delete(producerToDelete);
+        Assertions.assertThat(this.producers).isNotNull().doesNotContain(delete);
+
+
+    }
+    @Test
+    @Order(7)
+    @DisplayName("update update a producer ")
+    void  update_UpdateProducer_WhenSuccessfull() {
+        BDDMockito.when(producerData.getProducers()).thenReturn(producers);
+        var producerToUpdate = this.producers.getFirst();
+        producerToUpdate.setName("Aniplex");
+
+        repository.update(producerToUpdate);
+        Assertions.assertThat(this.producers).contains(producerToUpdate);
+
+        Assertions.assertThat(producerToUpdate.getName()).isEqualTo("Aniplex");
+
+
+    }
+
+
+
+
+
+
+
 
 
 }
