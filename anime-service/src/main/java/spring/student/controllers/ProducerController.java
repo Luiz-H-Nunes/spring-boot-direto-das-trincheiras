@@ -78,7 +78,6 @@ public class ProducerController {
 
         service.update(producer);
 
-
         return ResponseEntity.noContent().build();
 
     }
