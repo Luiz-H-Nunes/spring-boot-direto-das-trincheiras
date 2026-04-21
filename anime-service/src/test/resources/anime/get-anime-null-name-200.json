@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Dragon Ball Z",
+    "id": 1,
+    "created": "2026-04-15T19:58:51.13"
+  },
+  {
+    "name": "Naruto",
+    "id": 2,
+    "created": "2026-04-15T19:58:51.13"
+  },
+  {
+    "name": "One Piece",
+    "id": 3,
+    "created": "2026-04-15T19:58:51.13"
+  },
+  {
+    "name": "Attack on Titan",
+    "id": 4,
+    "created": "2026-04-15T19:58:51.13"
+  },
+  {
+    "name": "Death Note",
+    "id": 5,
+    "created": "2026-04-15T19:58:51.13"
+  },
+  {
+    "name": "Fullmetal Alchemist: Brotherhood",
+    "id": 6,
+    "created": "2026-04-15T19:58:51.13"
+  },
+  {
+    "name": "Bleach",
+    "id": 7,
+    "created": "2026-04-15T19:58:51.13"
+  },
+  {
+    "name": "Demon Slayer (Kimetsu no Yaiba)",
+    "id": 8,
+    "created": "2026-04-15T19:58:51.13"
+  },
+  {
+    "name": "My Hero Academia (Boku no Hero Academia)",
+    "id": 9,
+    "created": "2026-04-15T19:58:51.13"
+  },
+  {
+    "name": "Neon Genesis Evangelion",
+    "id": 10,
+    "created": "2026-04-15T19:58:51.13"
+  }
+]

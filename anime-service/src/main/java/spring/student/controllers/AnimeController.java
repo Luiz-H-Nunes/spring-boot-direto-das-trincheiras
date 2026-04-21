@@ -30,7 +30,6 @@ public class AnimeController {
 
 
 
-
     @GetMapping()
     public ResponseEntity<List<AnimeGetResponse>> listAll(@RequestParam(required = false) String name) {
         log.debug("Request received for listAll anime, param name {}", name);
